@@ -4,16 +4,13 @@ Resources:
   CreateThumbnail:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: handler
-      Runtime: runtime
+      Handler: exampleservice::exampleservice.LambdaEntryPoint::FunctionHandlerAsync
+      Runtime: dotnetcore2.1
       Timeout: 60
       Policies: AWSLambdaExecute
       Events:
-        CreateThumbnailEvent:
-          Type: S3
+        HttpPost:
+          Type: Api
           Properties:
-            Bucket: !Ref SrcBucket
-            Events: s3:ObjectCreated:*
-
-  SrcBucket:
-    Type: AWS::S3::Bucket
+            Path: /{proxy+}
+            Method: post
